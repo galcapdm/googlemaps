@@ -1,4 +1,4 @@
 # googlemaps
 Some google maps api stuff
 
-Api key - AIzaSyCPb8byuKmAvWrtZUuTDx48N_yINnIjRkQ
+Development API key - AIzaSyCPb8byuKmAvWrtZUuTDx48N_yINnIjRkQ
