@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<markers>
+    <marker id="1" name="T Junction" address="Forthview Crescent, Currie" lat="55.898873427039725" lng="3.317978382110595" type="restaurant" />
+    <marker id="2" name="Shooting Club" address="Currie Shooting Club, Currie" lat="55.89960125681578" lng="3.3160793781280518" type="restaurant" />
+    <marker id="3" name="Lyal's house" address="Forthview Place, Currie" lat="55.897610218979814" lng="3.313928246498108" type="house" />
+</markers>

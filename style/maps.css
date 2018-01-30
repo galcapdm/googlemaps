@@ -1,0 +1,192 @@
+@import url('https://fonts.googleapis.com/css?family=Orbitron');
+
+/* Always set the map height explicitly to define the size of the div
+ * element that contains the map. */
+#map {
+    height: 100%;
+}
+
+/* Optional: Makes the sample page fill the window. */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: sans, Arial;
+}
+
+#spottingDiv {
+    background-color: #666;
+    border-bottom: 1px solid #fff;
+    height: 60px;
+}
+
+#spottingDiv * {
+    color: #fff;
+}
+
+#spottingDiv button * {
+    color: #666;
+}
+
+#spottingDiv button:hover {
+    background-color: #f7f7f7;
+}
+
+#spottingDiv p {
+    font-size: 1.6em;
+    padding: 20px 10px;
+}
+
+#compass {
+    display: none;
+    position: absolute;
+    top: 20px;
+    left: 120px;
+    z-index: 10;
+}
+
+.hidden {
+    display: none;
+}
+
+.qty {
+    font-size: 2em;
+}
+
+div#compass img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 80px;
+}
+
+#itemholder img,
+img#selectedobservation {
+    max-height: 77px;
+}
+
+#newobs,
+#propertiesholder,
+#addmarkerholder {
+    display: none;
+}
+
+#addmarkerholder {
+    height: 70px;
+}
+
+#addmarkerholder span {
+    font-size:  1.2em;
+    position: relative;
+    top: 15px;
+}
+
+#addmarkerholder button#backbutton {
+    position: relative;
+    top: 10px;
+}
+
+#spottingDiv button,
+#propertiesholder button,
+#addmarkerholder button {
+    margin: 10px 0 -15px 10px;
+}
+
+i.fa.fa-times.qtylabel {
+    font-size: 3em;
+    position: relative;
+    top: 10px;
+}
+
+input#qty, input#newtime, input#newbearing {
+    font-size: 2em;
+    padding: 10px;
+    position: relative;
+    top: 5px;
+    width: 80px;
+    text-align: center;
+}
+
+input#newtime {
+    width: 165px;
+}
+
+span#selectedobservationlabel,
+#newbearinglabel,
+#newtimelabel {
+    font-size: 1.4em;
+    position: relative;
+    top: 5px;
+    margin-left: 10px;
+}
+
+.smalltext {
+    font-size: 0.8em;
+}
+
+span.highlight {
+    margin: 0 0 0 10px;
+    color: #b53b3b;
+}
+
+#spottingtimeholder, spottingtime {
+    font-family: 'Orbitron', sans-serif;
+    text-align: left;
+    float: right;
+    width: 170px;
+    margin: 20px 20px 0 0;
+    letter-spacing: 3px;
+}
+
+#spottingtime {
+    font-family: 'Orbitron', sans-serif;
+    text-align: left;
+    letter-spacing: 3px;
+    background-color: #e8e8e8;
+    border-radius: 4px;
+    padding: 5px 10px;
+    color: #000;
+}
+
+[data-editstatus = 'edit'] .delobs {
+    display: inline;
+}
+
+.delobs {
+    display: none;
+    float: right;
+}
+
+.delobs:hover {
+    color: darkred;
+    cursor: pointer;
+}
+
+.markerholder {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.bgmap {
+    position: relative;
+    top: 30px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.marker {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 250px;
+}
+
+.markershadow {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 250px;
+}
