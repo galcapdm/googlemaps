@@ -12,18 +12,18 @@ $database = new Database();
 $db = $database->getConnection();
 
 // initialize object
-$category = new Category($db);
+$locations = new Locations($db);
 
 // query categorys
-$stmt = $category->read();
+$stmt = $locations->read();
 $num = $stmt->rowCount();
 
 // check if more than 0 record found
 if($num>0){
 
     // products array
-    $categories_arr=array();
-    $categories_arr["records"]=array();
+    $locations_arr=array();
+    $locations_arr["records"]=array();
 
     // retrieve our table contents
     // fetch() is faster than fetchAll()
@@ -34,21 +34,20 @@ if($num>0){
         // just $name only
         extract($row);
 
-        $category_item=array(
+        $locations_item=array(
             "id" => $id,
             "name" => $name,
-            "created" => $created
+            "created" => $created,
+            "lat" => $lat,
+            "lng" => $lng,
+            "userid" => $userid,
         );
 
-        array_push($categories_arr["records"], $category_item);
+        array_push($locations_arr["records"], $locations_item);
     }
 
-    echo json_encode($categories_arr);
-}
-
-else{
-    echo json_encode(
-        array("message" => "No products found.")
-    );
+    echo json_encode($locations_arr);
+} else {
+    echo json_encode(array("message" => "No locations found."));
 }
 ?>

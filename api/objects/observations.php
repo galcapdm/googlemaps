@@ -1,18 +1,19 @@
 <?php
-class Product{
+class Observation{
 
     // database connection and table name
     private $conn;
-    private $table_name = "products";
+    private $table_name = "observations";
 
     // object properties
     public $id;
-    public $name;
-    public $description;
-    public $price;
-    public $category_id;
-    public $category_name;
-    public $created;
+    public $qty;
+    public $reportingname;
+    public $lat;
+    public $lng;
+    public $bearing;
+    public $time;
+    public $osgridref;
 
     // constructor with $db as database connection
     public function __construct($db){
@@ -24,14 +25,9 @@ class Product{
 
         // select all query
         $query = "SELECT
-                    c.name as category_name, p.id, p.name, p.description, p.price, p.category_id, p.created
+                    id, qty, reportingname, lat, lng, bearing, time, osgridref
                 FROM
-                    " . $this->table_name . " p
-                    LEFT JOIN
-                        categories c
-                            ON p.category_id = c.id
-                ORDER BY
-                    p.created DESC";
+                    " . $this->table_name;
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -77,19 +73,16 @@ class Product{
 
     }
 
-    // used when filling up the update product form
+    // Used to find observations for a specific location.
     function readOne(){
 
         // query to read single record
         $query = "SELECT
-                    c.name as category_name, p.id, p.name, p.description, p.price, p.category_id, p.created
+                    id, qty, reportingname, lat, lng, bearing, time, osgridref
                 FROM
-                    " . $this->table_name . " p
-                    LEFT JOIN
-                        categories c
-                            ON p.category_id = c.id
+                    " . $this->table_name . "
                 WHERE
-                    p.id = ?
+                    id = ?
                 LIMIT
                     0,1";
 
@@ -210,6 +203,33 @@ class Product{
         return $stmt;
     }
 
+    // Get all observations for spcific location.
+    function locationObservations($id){
+
+        // select all query
+        $query = "SELECT
+                    id, qty, reportingname, lat, lng, bearing, time, osgridref
+                FROM
+                    " . $this->table_name . " 
+                WHERE
+                    locationid = ?";
+        
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $id=htmlspecialchars(strip_tags($id));
+
+        // bind
+        $stmt->bindParam(1, $id);
+
+        // execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
+    
+    
     // read products with pagination
     public function readPaging($from_record_num, $records_per_page){
 

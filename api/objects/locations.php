@@ -1,5 +1,5 @@
 <?php
-class Category{
+class Locations{
 
     // Set the database connection and table name.
     private $conn;
@@ -33,12 +33,12 @@ class Category{
         return $stmt;
     }
 
-    // Used by select drop-down list.
+    // Used to read all records from the $table_name.
     public function read(){
 
         //select all data
         $query = "SELECT
-                    id, name, created
+                    id, name, lat, lng, userid, created
                 FROM
                     " . $this->table_name . "
                 ORDER BY
@@ -49,5 +49,33 @@ class Category{
 
         return $stmt;
     }
+    
+
+    // Get details of a specific location.
+    function getLocationDetails($id){
+
+        // select all query
+        $query = "SELECT
+                    id, name, lat, lng, userid, created
+                FROM
+                    " . $this->table_name . " 
+                WHERE
+                    id = ?";
+        
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $id=htmlspecialchars(strip_tags($id));
+
+        // bind
+        $stmt->bindParam(1, $id);
+
+        // execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
+    
 }
 ?>

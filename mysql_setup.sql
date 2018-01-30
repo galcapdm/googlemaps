@@ -24,8 +24,10 @@ CREATE TABLE `markers` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
+
 CREATE TABLE `observations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `locationid` int(11) NOT NULL,
   `qty` varchar(60) NOT NULL,
   `reportingname` varchar(80) NOT NULL,
   `lat` float(10,6) NOT NULL,

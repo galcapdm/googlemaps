@@ -1,0 +1,44 @@
+nav {
+    width:180px;
+    padding:0;
+    position: fixed;
+    top:0;
+    height:100%;
+    margin:0 0 0 -250px;
+    -webkit-transition: .5s ease-in;
+    -moz-transition: .5s ease-in;
+    -o-transition: .5s ease-in;
+    -ms-transition: .5s ease-in;
+    transition: .5s ease-in;
+}
+
+
+.menushow {
+    margin: 0;
+    border-right: 1px solid #ddd;
+}
+
+ul#locationlist {
+    list-style: none;
+    padding-left: 0;
+}
+
+ul#locationlist li {
+    text-align: left;
+    padding: 20px 5px 20px 15px ;
+    border-bottom: 1px solid #ddd;
+    font-size: 1.2em;
+}
+
+ul#locationlist li:hover {
+    cursor: pointer;
+    background-color: #fafafa;
+}
+
+ul#locationlist li:before {
+    font-family: 'fontawesome';
+    content: '\f041';
+    margin-right: 5px;
+    color: #e81e25;
+    
+}

@@ -190,3 +190,8 @@ span.highlight {
     transform: translate(-50%, 0);
     width: 250px;
 }
+
+#locations-list button span {
+    font-family: sans, Arial;
+    margin-left: 10px;
+}

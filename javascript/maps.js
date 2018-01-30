@@ -19,29 +19,37 @@ const MARKER_SHADOW = 'https://maps.gstatic.com/mapfiles/ms2/micons/msmarker.sha
 
 
 $(document).ready(function(){
-    /*
-    // Init the time picker input.
-    $('input#newtime').timepicker({
-        timeFormat: 'h:mm p',
-        interval: 60,
-        minTime: '10',
-        maxTime: '11:59pm',
-        startTime: '00:00',
-        dynamic: false,
-        dropdown: false,
-        scrollbar: true
-    });
-    */
-    
+
+    // If the markerholder is showing then set up the repeat bounce animation.
+    // Only on index.php
     if($('#markerholder').length){
+        // Get any defined locations.
+        getLocations();
         window.setInterval(function(){
             // Repeat doBounce.
-            console.log('aaa');
             doBounce();
         }, 5000);
     }
     
 });
+
+function getLocations(){
+    
+    $.getJSON("api/locations/read.php", function(data){
+        // html for listing products
+        var read_locations_html = '<ul id="locationlist">';
+            $.each(data.records, function(key, val){
+                read_locations_html += "<li class='location-list-item btn-action' data-action='spotting' data-id='"+val.id+"'>"+val.name+"</li>";
+            });
+        read_locations_html += '</ul>';
+        
+        // Inject to 'locations-list' element.
+        $("#locations-list").html(read_locations_html);
+        
+    });
+}
+
+
 function getParameterByName(name, url) {
     if (!url)
         url = window.location.href;
@@ -62,19 +70,19 @@ function initMap() {
     
     loadMapCentre(id);
     // Need to wait on the data being loaded.
-    setTimeout(checkMapInit, 1000);
+    //setTimeout(checkMapInit(id), 1000);
 }
 
-function checkMapInit() {
+function checkMapInit(id) {
     // Check the global mapCentLat to see if it is a number.
     if (!isNaN(mapCentLat)) {
         // Good to go so build the map
-        buildMap();
+        buildMap(id);
     }
 
 }
 
-function buildMap() {
+function buildMap(id) {
 
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: Number(mapCentLat), lng: Number(mapCentLng)},
@@ -99,8 +107,8 @@ function buildMap() {
         }
     });
 
-    // Load the locations from the DB for this map.
-    loadLocations();
+    // Load the relevant observations from the DB for this map.
+    loadObservations(id);
 }
 /*
  *  Function adds a marker to the current map.
@@ -199,7 +207,7 @@ function saveMarker() {
 
 }
 
-function loadLocations() {
+function loadLocationsOLD() {
     var xmlhttp = new XMLHttpRequest();
     // Load from a JSON string supplied by this file.
     var url = "records.php?id=2";
@@ -215,10 +223,35 @@ function loadLocations() {
 
 }
 
-function loadMapCentre(location) {
+function loadObservations(id){
+
+    $.getJSON("api/observations/read_observations.php?id".id, function(data){
+        // Get the 
+        $.each(data.records, function(key, val){
+            placeMarkers(val);
+        });
+    });
+}
+
+
+function loadMapCentre(id){
+
+    $.getJSON("api/locations/read_one.php?id="+id, function(data){
+        // Get the 
+        $.each(data.records, function(key, val){
+            console.log(val);
+            
+            mapCentLat = val.lat;
+            mapCentLng = val.lng;
+        });
+        checkMapInit(id);
+    });
+}
+
+function loadMapCentreOLD(id) {
     var xmlhttp = new XMLHttpRequest();
     // Load from a JSON string supplied by this file.
-    var url = "records.php?id=" + location;
+    var url = "records.php?id=" + id;
 
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -512,3 +545,16 @@ function doBounce() {
     }
 }
 
+
+
+/* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
+function openNav() {
+    //document.getElementById("mySidenav").style.width = "250px";
+    //document.getElementById("main").style.marginLeft = "250px";
+}
+
+/* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft = "0";
+}

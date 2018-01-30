@@ -5,30 +5,31 @@ header("Content-Type: application/json; charset=UTF-8");
 
 // include database and object files
 include_once '../config/database.php';
-include_once '../objects/products.php';
+include_once '../objects/locations.php';
 
 // instantiate database and product object
 $database = new Database();
 $db = $database->getConnection();
 
 // initialize object
-$product = new Product($db);
+$location = new Locations($db);
 
 // get keywords
-$keywords=isset($_GET["s"]) ? $_GET["s"] : "";
+$id=isset($_GET["id"]) ? $_GET["id"] : "";
 
 // query products
-$stmt = $product->search($keywords);
+$stmt = $location->getLocationDetails($id);
 $num = $stmt->rowCount();
+
 
 // check if more than 0 record found
 if($num>0){
 
-    // products array
-    $products_arr=array();
-    $products_arr["records"]=array();
+    // Observations array.
+    $location_arr=array();
+    $location_arr["records"]=array();
 
-    // retrieve our table contents
+    // Retrieve the observations.
     // fetch() is faster than fetchAll()
     // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -37,24 +38,20 @@ if($num>0){
         // just $name only
         extract($row);
 
-        $product_item=array(
+        $location_item=array(
             "id" => $id,
             "name" => $name,
-            "description" => html_entity_decode($description),
-            "price" => $price,
-            "category_id" => $category_id,
-            "category_name" => $category_name
+            "lat" => $lat,
+            "lng" => $lng,
+            "userid" => $userid,
+            "created" => $created
         );
 
-        array_push($products_arr["records"], $product_item);
+        array_push($location_arr["records"], $location_item);
     }
 
-    echo json_encode($products_arr);
-}
-
-else{
-    echo json_encode(
-        array("message" => "No products found.")
-    );
+    echo json_encode($location_arr);
+} else {
+    echo json_encode(array("message" => "No location details found."));
 }
 ?>

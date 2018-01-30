@@ -4,13 +4,16 @@ $(document).on('click', '.btn-action', function () {
     var action = $(this).data('action');
 
     switch (action) {
-        case 'hidesplash':
-            $('#markerholder').fadeOut(400);
-            initMap();
+        case 'opennav':
+            $("nav").toggleClass("menushow");
         break
+        case 'spotting':
+            var id = $(this).data('id');
+            window.location.replace('spotting.php?id='+id);
+            break;
         case 'home':
-            window.location.replace('index.php?id=1');
-        break;
+            window.location.replace('/spotting-maps');
+            break;
         case 'setup':
             // Toggle the body data-editstatus.
             if ($('body').attr('data-editstatus') == 'edit') {
