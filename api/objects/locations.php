@@ -49,7 +49,7 @@ class Locations{
 
         return $stmt;
     }
-    
+
 
     // Get details of a specific location.
     function getLocationDetails($id){
@@ -58,10 +58,10 @@ class Locations{
         $query = "SELECT
                     id, name, lat, lng, userid, created
                 FROM
-                    " . $this->table_name . " 
+                    " . $this->table_name . "
                 WHERE
                     id = ?";
-        
+
         // prepare query statement
         $stmt = $this->conn->prepare($query);
 
@@ -76,6 +76,32 @@ class Locations{
 
         return $stmt;
     }
-    
+
+        // Get details of a users locations.
+    function getUserLocations($userid){
+
+        // select all query
+        $query = "SELECT
+                    id, name, lat, lng, userid, created
+                FROM
+                    " . $this->table_name . "
+                WHERE
+                    userid = ?";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $id=htmlspecialchars(strip_tags($userid));
+
+        // bind
+        $stmt->bindParam(1, $userid);
+
+        // execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
+
 }
 ?>

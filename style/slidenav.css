@@ -30,15 +30,19 @@ ul#locationlist li {
     font-size: 1.2em;
 }
 
-ul#locationlist li:hover {
+ul#locationlist li.location-list-item-nomarker {
+    background-color: #fafafa;
+}
+
+ul#locationlist li.location-list-item:hover {
     cursor: pointer;
     background-color: #fafafa;
 }
 
-ul#locationlist li:before {
+ul#locationlist li.location-list-item:before {
     font-family: 'fontawesome';
     content: '\f041';
     margin-right: 5px;
     color: #e81e25;
-    
+
 }

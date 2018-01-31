@@ -11,7 +11,8 @@
         <script src="javascript/buttons.js" type="text/javascript"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+        <link href="style/login.css" rel="stylesheet" type="text/css"/>
+        <link href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet">
         <link href="style/maps.css" rel="stylesheet" type="text/css"/>
         <link href="style/slidenav.css" rel="stylesheet" type="text/css"/>
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -24,12 +25,24 @@
         </nav>
 
         <div id="main">
-             <div id="markerholder" class="btn-action" data-action="opennav">
+             <div id="markerholder">
                 <img id="bgmap" class="bgmap" src="images/site/frontpagemap.jpg">
                 <img id="marker" class="marker" src="images/site/marker.png">
                 <img id="markershadow" class="markershadow" src="images/site/markershadow.png">
+                <div class="container">
+                    <div class="login-container">
+                        <div id="output"></div>
+                        <div class="form-box">
+                            <input name="username" id="username" type="text" placeholder="username">
+                            <button class="btn btn-info btn-block login btn-action" type="submit" data-action="login">Start</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
+
+
 
     </body>
 </html>

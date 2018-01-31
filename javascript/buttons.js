@@ -4,6 +4,29 @@ $(document).on('click', '.btn-action', function () {
     var action = $(this).data('action');
 
     switch (action) {
+        case 'login':
+            var userid = $("input[name=username]");
+
+            //little validation just to check username
+            if (userid.val() != "") {
+
+                if($("#output").hasClass('alert-danger')){
+                    $("#output").fadeOut(400);
+                }
+
+                // Get any defined locations for the supplied user.
+                getLocations(userid.val());
+
+                if(!$("nav").hasClass('menushow')){
+                    $("nav").toggleClass("menushow");
+                }
+
+            } else {
+                //remove success mesage replaced with error message
+                $("#output").removeClass(' alert alert-success');
+                $("#output").addClass("alert alert-danger animated fadeInUp").html("Please enter a username");
+            }
+            break;
         case 'opennav':
             $("nav").toggleClass("menushow");
         break
@@ -53,10 +76,10 @@ $(document).on('click', '.btn-action', function () {
 
 $(document).on('keypress', '#qty', function (e) {
     if (e.which === 13) {
-        
+
         var qty = $(this).val();
         setObservation('qty', qty);
-        
+
         $('#newbearingholder').css('display', 'inline');
         $('#newbearingholder').fadeIn(400);
         $('#newbearing').focus();
@@ -64,9 +87,9 @@ $(document).on('keypress', '#qty', function (e) {
 });
 
 $(document).on('keypress', '#newbearing', function (e) {
-    
+
     if (e.which === 13 ) {
-    
+
         var newBearing = $( '#newbearing' ).val();
         if(newBearing > 359 || newBearing < 0){
             // Show a bootstrap modal error message

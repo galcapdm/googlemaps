@@ -23,32 +23,37 @@ $(document).ready(function(){
     // If the markerholder is showing then set up the repeat bounce animation.
     // Only on index.php
     if($('#markerholder').length){
-        // Get any defined locations.
-        getLocations();
         window.setInterval(function(){
             // Repeat doBounce.
             doBounce();
         }, 5000);
     }
-    
+
 });
 
-function getLocations(){
-    
-    $.getJSON("api/locations/read.php", function(data){
+
+function getLocations(userid){
+
+    $.getJSON("api/locations/get_user_locations.php?id="+userid, function(data){
         // html for listing products
-        var read_locations_html = '<ul id="locationlist">';
-            $.each(data.records, function(key, val){
-                read_locations_html += "<li class='location-list-item btn-action' data-action='spotting' data-id='"+val.id+"'>"+val.name+"</li>";
-            });
+        var read_locations_html = '<ul id="locationlist"><li class="location-list-item-nomarker">Your locations list</li>';
+
+            if(data.message){
+                read_locations_html += "<li class='location-list-item'>"+data.message+"</li>";
+                read_locations_html += "<li class='location-list-item-nomarker' data-action='newlocation' data-id='"+userid+"'>Click here to get started with your first location.</li>";
+            } else {
+                $.each(data.records, function(key, val){
+                    read_locations_html += "<li class='location-list-item btn-action' data-action='spotting' data-id='"+val.id+"'>"+val.name+"</li>";
+                });
+            }
         read_locations_html += '</ul>';
-        
+
         // Inject to 'locations-list' element.
         $("#locations-list").html(read_locations_html);
-        
+
+
     });
 }
-
 
 function getParameterByName(name, url) {
     if (!url)
@@ -67,7 +72,7 @@ function initMap() {
 
     var id = getParameterByName('id');
     spottingTime = document.getElementById('spottingtime'); // Set the spotting time holder.
-    
+
     loadMapCentre(id);
     // Need to wait on the data being loaded.
     //setTimeout(checkMapInit(id), 1000);
@@ -112,9 +117,9 @@ function buildMap(id) {
 }
 /*
  *  Function adds a marker to the current map.
- *  
+ *
  *  @param  location    object  JS object representing the current marker.
- *  
+ *
  */
 function addMarker(location) {
 
@@ -130,7 +135,7 @@ function addMarker(location) {
 
     // Add this new marker to the markers array.
     markers.push(marker);
-    
+
     // Now activite the save button.
     $('#btnaddmarker').removeAttr("disabled");
 
@@ -148,16 +153,16 @@ function addMarker(location) {
 
 /*
  *  Function delete an observation from the database.
- *  
+ *
  *  @param  obsid    ID of the record in the observations table to delete.
  *  return  boolean
- *  
+ *
  */
 function deleteObservation(obsid) {
 
     var xmlhttp = new XMLHttpRequest();
     // Set values to send.
-    
+
     var url = "records.php?id=4&obsid=" + obsid;
 
             xmlhttp.onreadystatechange = function() {
@@ -187,7 +192,7 @@ function clearLocations() {
 function saveMarker() {
     var xmlhttp = new XMLHttpRequest();
     // Set values to send.
-    
+
     var url = "records.php?id=3&lat=" + newObs['lat'] + "&lng=" + newObs['lng']+ "&bearing=" + newObs['bearing']+ "&qty=" + newObs['qty']+ "&time=" + newObs['time']+ "&osgridref=" + newObs['osgridref'] + "&rname=" + newObs['reportingname'];
 
 
@@ -226,7 +231,7 @@ function loadLocationsOLD() {
 function loadObservations(id){
 
     $.getJSON("api/observations/read_observations.php?id".id, function(data){
-        // Get the 
+        // Get the
         $.each(data.records, function(key, val){
             placeMarkers(val);
         });
@@ -237,10 +242,10 @@ function loadObservations(id){
 function loadMapCentre(id){
 
     $.getJSON("api/locations/read_one.php?id="+id, function(data){
-        // Get the 
+        // Get the
         $.each(data.records, function(key, val){
             console.log(val);
-            
+
             mapCentLat = val.lat;
             mapCentLng = val.lng;
         });
@@ -327,13 +332,13 @@ function spottingtimeadjust(time){
         spottingTime.innerHTML = time;
         $('#spottingtime').fadeIn(400);
     });
-    
+
 }
 
 function setBSModalMessage(msg){
-    
+
     var thisMsg;
-    
+
     switch(msg){
         case 1:
             thisMsg = 'Invalid value. Please enter a value between 0 and 359';
@@ -356,18 +361,18 @@ function setBSModalMessage(msg){
         default:
             thisMsg = 'Unhandled erro. Please seek help for error code:'+msg;
             break;
-                
+
     }
     // Set the modal message text.
     $("#bsModalBody").text(thisMsg);
     // Show the bootstrap modal.
     $("#infoModal").modal();
-    
+
 }
 
 /*
  *  Function to run actions when the infowindow is closed.
- *  
+ *
  */
 function infoWindowClose() {
 
@@ -376,7 +381,7 @@ function infoWindowClose() {
     // Hide the spotting time.
     $('#spottingtimeholder').fadeOut(800);
     $('#spottingtime').fadeOut(800);
-    
+
 }
 
 var looper;
@@ -433,36 +438,36 @@ function parseHTML(markup) {
 
 /*
  *  Function to check if a time is valid and return an AM/PM value from a 24hr time.
- *  
+ *
  *  @param  t   string  A 24hr time value
  *  return  string      A valid AM/PM string value
- * 
+ *
  */
 function validTime(t){
-    
+
     // Strip any non numeric chars
     t = t.replace(/\D/g,'');
-    
+
     // Check if supplied time (t) is a number,
     if(isNaN(t)){
        setBSModalMessage(2);
        return false;
     }
-    
+
     // Avoid an issue for 0000 times!
     if(t === '0000'){
        setBSModalMessage(3);
        return false;
     }
-    
+
     // It is a number but is it a valid 24hr time?
     if(t.length == 4 && t > -1 && t < 2400){
-        
+
         var amPm = 'AM';
 
         // Select the first 2 digits as this will determine AM/PM.
         // Will also need to convert anything > 12 to a < 12 value for a true AM/PM value.
-        
+
         var h = t.substr(0, 2);
         // If a leading 0 has been supplied then just pick the next digit
         // as AM/PM time just needs values 1-12.
@@ -486,7 +491,7 @@ function validTime(t){
         }
 
         return h+':'+m+amPm;
-        
+
     }
 }
 
